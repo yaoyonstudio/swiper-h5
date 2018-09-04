@@ -5,12 +5,15 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 // const extractCSS = new ExtractTextPlugin({filename: 'css/css.css', disable: false, allChunks: true});
-const extractSCSS = new ExtractTextPlugin({filename: 'css/style.css', disable: false, allChunks: true});
+const extractSCSS = new ExtractTextPlugin({filename: 'css/style.[hash].css', disable: false, allChunks: true});
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   // entry: ['./src/css/css.css', './src/css/style.scss', './src/index.js'],
   entry: ['./src/css/style.scss', './src/index.js'],
+  output: {
+    filename: "[name].[hash].js"
+  },
   module: {
     rules: [
       // {
@@ -99,11 +102,11 @@ module.exports = {
       }
     }
   },
-  resolve: {
-    alias: {
-      'assets': path.resolve(__dirname, 'src/public/'),
-    }
-  },
+  // resolve: {
+  //   alias: {
+  //     'assets': path.resolve(__dirname, 'src/public/'),
+  //   }
+  // },
   plugins: [
     // extractCSS,
     extractSCSS,
