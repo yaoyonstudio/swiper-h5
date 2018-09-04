@@ -1,3 +1,4 @@
+/* eslint-disable */
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
@@ -68,7 +69,7 @@ module.exports = {
     ]
   },
   devServer: {
-    port: 9000
+    port: 9001
   },
   optimization: {
     splitChunks: {

@@ -1,16 +1,20 @@
-import {
-  API_URL,
-  log
-} from './js/common'
-
 import $ from 'jquery'
 import Swiper from 'swiper'
 
-console.log('app init')
-log(API_URL)
+import app from './js/common'
+import Ajax from './libs/Ajax'
+import { log } from './libs/Helper'
+
+log(app)
+
+app.extends = {
+  name: 'ken'
+}
 
 $(document).ready(function () {
-  console.log('dom ready!')
+  Ajax(app.apiUrl, 'GET', {}, (res) => {
+    log('res:', res)
+  })
 
   const mySwiper = new Swiper('.swiper-container', {
     autoplay: false,
@@ -23,14 +27,14 @@ $(document).ready(function () {
     },
     on: {
       init: function () {
-        console.log('mySwiper init')
-        console.log('current slide: ', this.activeIndex)
+        // log('mySwiper init')
+        // console.log('current slide: ', this.activeIndex)
         // 在初始化时触发一次transitionEnd事件
         this.emit('transitionEnd')
       }
     }
   })
-  console.log('swiper:', mySwiper)
+  // log('swiper:', mySwiper)
   mySwiper.on('slideChange', function () {
     console.log('current slide: ', this.activeIndex)
   })
