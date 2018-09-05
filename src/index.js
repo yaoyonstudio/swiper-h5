@@ -13,7 +13,7 @@ app.extends = {
 
 $(document).ready(function () {
   Ajax(app.apiUrl, 'GET', {}, (res) => {
-    log('res:', res)
+    console.log('res: ', res)
   })
 
   const mySwiper = new Swiper('.swiper-container', {

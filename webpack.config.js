@@ -4,25 +4,20 @@ const webpack = require('webpack')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-// const extractCSS = new ExtractTextPlugin({filename: 'css/css.css', disable: false, allChunks: true});
 const extractSCSS = new ExtractTextPlugin({filename: 'css/style.[hash].css', disable: false, allChunks: true});
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-module.exports = {
-  // entry: ['./src/css/css.css', './src/css/style.scss', './src/index.js'],
+const PRODUCTION = process.env.NODE_ENV === 'production'
+
+console.log(process.env.NODE_ENV)
+
+const config = {
   entry: ['./src/css/style.scss', './src/index.js'],
   output: {
     filename: "[name].[hash].js"
   },
   module: {
     rules: [
-      // {
-      //   test: /\.css$/,
-      //   use: extractCSS.extract({
-      //     fallback: "style-loader",
-      //     use: ["css-loader", "postcss-loader"]
-      //   })
-      // },
       {
         test: /\.scss$/,
         use: extractSCSS.extract({
@@ -71,9 +66,6 @@ module.exports = {
       }
     ]
   },
-  devServer: {
-    port: 9001
-  },
   optimization: {
     splitChunks: {
       chunks: 'async',
@@ -90,34 +82,36 @@ module.exports = {
           name: 'vendors',
           chunks: 'all'
         }
-        // vendors: {
-        //   test: /[\\/]node_modules[\\/]/,
-        //   priority: -10
-        // },
-        // default: {
-        //   minChunks: 2,
-        //   priority: -20,
-        //   reuseExistingChunk: true
-        // }
       }
     }
   },
-  // resolve: {
-  //   alias: {
-  //     'assets': path.resolve(__dirname, 'src/public/'),
-  //   }
-  // },
   plugins: [
-    // extractCSS,
     extractSCSS,
-    // new webpack.ProvidePlugin({
-    //   $: 'jquery',
-    //   jQuery: 'jquery'
-    // }),
     new HtmlWebPackPlugin({
       template: "./src/index.html",
       filename: "./index.html"
     }),
-    // new BundleAnalyzerPlugin(),
   ]
-};
+}
+
+if (PRODUCTION) {
+  console.log('production mode')
+  config.plugins.push(new BundleAnalyzerPlugin())
+} else {
+  console.log('development mode')
+  config.devtool = 'inline-source-map'
+  config.plugins.push(new webpack.HotModuleReplacementPlugin())
+  config.plugins.push(new webpack.NamedModulesPlugin())
+  
+  config.devtool = "#eval-source-map"
+  config.devServer = {
+    watchContentBase: true,
+    contentBase: path.join(__dirname, "src"),
+    compress: true,
+    port: 9000,
+    hot: true,
+    inline: true
+  }
+}
+
+module.exports = config

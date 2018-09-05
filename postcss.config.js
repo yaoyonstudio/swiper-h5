@@ -1,16 +1,7 @@
 module.exports = {
-  // syntax: 'postcss-scss',
+  syntax: 'postcss-scss',
   plugins: [
-    // require('postcss-import')({}),
-    require('autoprefixer')({ /* ...options */ })
+    require('postcss-import')({}),
+    require('autoprefixer')({})
   ]
 }
-
-// module.exports = {
-//   // parser: 'sugarss',
-//   plugins: {
-//     'postcss-import': {},
-//     'postcss-preset-env': {},
-//     // 'cssnano': {}
-//   }
-// }
